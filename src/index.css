@@ -1,0 +1,159 @@
+nav {
+    padding: 10px;
+    background-color: rgb(255, 228, 196);
+}
+
+main {
+    margin: auto;
+    padding: 2em 1em;
+    text-align: left;
+}
+
+label {
+    padding-right: 6px;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+/* form borders */
+select, #quantityToAdd, #ingredientToAdd {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+#cuisine-select {
+    display: block;
+    height: 38px;
+    width: inherit;
+}
+
+/* images */
+.img-thumbnail {
+    width: fit-content;
+}
+
+.recipe-img {
+    width: -webkit-fill-available;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50px;
+    padding: 1.5em;
+    transition: all ease 0.7s;
+}
+
+/* all buttons */
+.vertical-middle {
+    vertical-align: middle;
+}
+
+.btn {
+    border-radius: 99px;
+}
+
+.btn-sm {
+    border-radius: 7px;
+    opacity: 70%;
+}
+
+.btn-sm:hover {
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.small {
+    font-style: italic;
+}
+
+.inline {
+    display: inline-block;
+}
+
+/* List recipes images */
+.recipe-box {
+    padding: 5px 15px;
+}
+  
+* > .recipe-box:hover > img {
+    box-shadow: 0 0px 10px 1px #8a8a8b; /*, off-center, blur edges, radius*/
+    opacity: 75%;
+    transition: 0.2s;
+}
+
+* > .recipe-box:hover > span {
+    opacity: 0%;
+    transition: 0.3s;
+}
+
+.recipe-box > img {
+    width: inherit;
+    border-radius: 10px;
+    opacity: 35%;
+    transition: 0.2s;
+    height: 220px;
+    object-fit: cover;
+}
+  
+/* link for the post */
+.recipe-box > span {
+    float: left;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #212529;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 500;
+    padding: 0px 13px;
+}
+
+/*tablet 426-768px*/
+@media screen and (min-width: 426px) {
+    main {
+        width: 725px
+    }
+}
+
+/* recipe-box photos */
+@media screen and (min-width: 576px) {
+    .recipe-box {
+      padding: 10px;
+    }
+  
+    .recipe-box > img {
+      height: 200px;
+    }
+
+    .recipe-img {
+        height: 500px;
+    }
+}
+  
+@media screen and (min-width: 768px) {
+    .recipe-box > img {
+      height: 200px;
+    }
+  
+    .recipe-box > span {
+      font-size: 28px;
+    }
+}
+
+
+/*desktop*/
+@media screen and (min-width: 1024px) {
+    main {
+        width: 865px;
+    }
+}
