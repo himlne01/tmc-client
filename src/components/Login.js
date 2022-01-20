@@ -15,7 +15,7 @@ function Login() {
     const submit = (event) => {
         event.preventDefault();
 
-        fetch( "http://localhost:8080/api/security/authenticate",
+        fetch(`${process.env.REACT_APP_API_HOST}/api/security/authenticate`,
             {
                 method: "POST",
                 headers: {

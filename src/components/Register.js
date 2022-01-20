@@ -5,19 +5,17 @@ import UserContext from './UserContext';
 
 function Register() {
 
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
-    const [confirmPassword,setConfirmPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [messages, setMessages] = useState([]);
 
     const history = useHistory();
 
-    const userManager = useContext(UserContext);
-
     const submit = (event) => {
         event.preventDefault();
         console.log(JSON.stringify({username,password}));
-        fetch( "http://localhost:8080/api/security/create_account",
+        fetch(`${process.env.REACT_APP_API_HOST}/api/security/create_account`,
             {
                 method: "POST",
                 headers: {

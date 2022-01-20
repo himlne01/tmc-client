@@ -37,14 +37,30 @@ function ListRecipe() {
 
     const [recipeList, setRecipeList] = useState([]); //useState(defaultRecipeList);
     const [cuisineList, setCuisineList] = useState([]); //useState(defaultCuisineList);
+    const [cuisineId, setCuisineId] = useState(25);
+    const [keyword, setKeyword] = useState("");
+
+    const assignCuisineId = (e) => {
+        setCuisineId(e.target.value);
+    }
+
+    const assignKeyword = (e) => {
+        setKeyword(e.target.value);
+    }
 
     const handleError = (message) => {
         console.log(message);
     }
 
+    const clearFilters = () => {
+        getCuisineAndRecipeList();
+        setCuisineId(25);
+        setKeyword("");
+    }
+
     const getCuisineAndRecipeList = () => {
 
-        fetch("http://localhost:8080/api/cuisine")
+        fetch(`${process.env.REACT_APP_API_HOST}/api/cuisine`)
         .then(
             (response) => {
                 //todo: handle 403
@@ -64,7 +80,7 @@ function ListRecipe() {
         })
         .catch(handleError);
 
-        fetch("http://localhost:8080/api/recipe")
+        fetch(`${process.env.REACT_APP_API_HOST}/api/recipe`)
         .then(
             (response) => {
                 //todo: handle 403
@@ -86,25 +102,43 @@ function ListRecipe() {
     }
 
     const findByCuisine = () => {
-        console.log("hello");
-        // fetch("http://localhost:8080/api/recipe/cuisine")
-        // .then(
-        //     (response) => {
-        //         //todo: handle 403
-        //         if (response.status === 200) {
-        //             return response.json();
-        //         } else if (response.status === 403) {
-        //             userManager.onLogout();
-        //             history.push("/Login")
-        //         } else {
-        //             return Promise.reject("An error occurred");
-        //         }
+        fetch(`${process.env.REACT_APP_API_HOST}/api/recipe/cuisine/` + cuisineId)
+        .then(
+            (response) => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 403) {
+                    userManager.onLogout();
+                    history.push("/Login")
+                } else {
+                    return Promise.reject("An error occurred");
+                }
 
-        //     }
-        // ).then(recipeList => {
-        //     setRecipeList(recipeList);
-        // })
-        // .catch(handleError);
+            }
+        ).then(recipeList => {
+            setRecipeList(recipeList);
+        })
+        .catch(handleError);
+    }
+
+    const findByKeyword = () => {
+        fetch(`${process.env.REACT_APP_API_HOST}/api/recipe/name/` + keyword)
+        .then(
+            (response) => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 403) {
+                    userManager.onLogout();
+                    history.push("/Login")
+                } else {
+                    return Promise.reject("An error occurred");
+                }
+
+            }
+        ).then(recipeList => {
+            setRecipeList(recipeList);
+        })
+        .catch(handleError);
     }
 
     useEffect(getCuisineAndRecipeList, [userManager])
@@ -118,20 +152,28 @@ function ListRecipe() {
                     : null)
                 : null}
             <h1>Recipes</h1>
-            <form onSubmit={findByCuisine}>
-                <label>Filter by cuisine:</label>
-                <select>
-                    {cuisineList.map(cuisine =>   
-                    <option value={cuisine.cuisineId} key={cuisine.cuisineId}>{cuisine.cuisineName}
-                    </option>
-                    )}
-                </select>
-                <button className="btn btn-sm" type="submit">Submit</button>
-            </form>
+            <div className="row">
+                <form onSubmit={findByCuisine} className="col">
+                    <label>Filter by cuisine:</label>
+                    <select id="cuisine-select" onChange={assignCuisineId} value={cuisineId}>
+                            {cuisineList.map(cuisine =>   
+                            <option key={cuisine.cuisineId} value={cuisine.cuisineId}>{cuisine.cuisineName}
+                            </option>
+                            )}
+                        </select>
+                    <button className="btn btn-sm p-0" onClick={findByCuisine} type="button">Submit</button>
+                </form>
+                <form onSubmit={findByKeyword} className="col">        
+                    <label className="">Search:</label>
+                    <input className="form-control" id='keyword' value={keyword} onChange={assignKeyword}/>
+                    <button className="btn btn-sm p-0" onClick={findByKeyword} type="button">Go</button>
+                </form>
+            </div>
+            <button className="btn btn-sm btn-warning mb-4 mt-3" onClick={clearFilters} type="button">Clear Filters</button>
             <div className="row">
                 {recipeList.map(recipe => 
                     <a href={"/recipe/" + recipe.recipeId} className="recipe-box col-12 col-md-4" key={recipe.recipeId}>
-                        <img src={recipe.imageRef} alt={recipe.recipeName} />
+                        <img src={recipe.imageRef} alt={recipe.recipeName} referrerPolicy="no-referrer"/>
                         <span>{recipe.recipeName}</span>
                     </a>
                 )}

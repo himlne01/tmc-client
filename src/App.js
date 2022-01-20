@@ -102,13 +102,15 @@ function App() {
         <Route exact path="/">
           <main>
             <h1 className="text-center mt-2">Too Many Cooks</h1>
-            <h4 className="text-center text-muted">Welcome to an online cookbook!</h4>
+            <h4 className="text-center text-muted">Welcome to our online cookbook!</h4>
             <div className="text-center">
+              <a href="listRecipe">
               <img
                 src="https://images-platform.99static.com//yvnDP1silckAz-nLhdsfaRc6yZc=/0x0:1000x1000/fit-in/500x500/99designs-contests-attachments/90/90696/attachment_90696588"
-                className="img-thumbnail"
+                className="img-thumbnail mt-5"
                 alt="Cookbook Logo"
               />
+              </a>
             </div>
           </main>
           

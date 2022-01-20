@@ -2,6 +2,7 @@ import {useState, useContext, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import UserContext from './UserContext.js';
 import '../index.css';
+import UploadImage from './UploadImage.js';
 
 function AddRecipe() {
 
@@ -17,8 +18,6 @@ function AddRecipe() {
     const [quantityToAdd, setQuantityToAdd] = useState('');
     const [cuisineList, setCuisineList] = useState([]);
     const [cuisineId, setCuisineId] = useState(27);
-    const [userId, setUserId] = useState(0);
-    const [username, setUsername] = useState("");
 
     const history = useHistory();
 
@@ -124,7 +123,7 @@ function AddRecipe() {
         
         //console.log(init.body);
 
-        fetch("http://localhost:8080/api/recipe", init)
+        fetch(`${process.env.REACT_APP_API_HOST}/api/recipe`, init)
             .then(response => {
                 console.log("in the promise!");
                 if (response.status === 201) {
@@ -150,10 +149,10 @@ function AddRecipe() {
             
 
     }
-
+    
     useEffect(() => {
         
-        fetch("http://localhost:8080/api/cuisine", {headers: {Authorization: "Bearer " + localStorage.getItem("jwt_token")}})
+        fetch(`${process.env.REACT_APP_API_HOST}/api/cuisine`, {headers: {Authorization: "Bearer " + localStorage.getItem("jwt_token")}})
         .then(
             (response) => {
                 //todo: handle 403
@@ -177,9 +176,17 @@ function AddRecipe() {
     return(
     <main>
         <div className="text-center">
-        <h3 className='mb-4'>Create a Recipe</h3>
+            <h3 className='mb-3'>Create a Recipe</h3>
+        </div>
+        <div className='inline mb-2'>
+            <div className='upload-div'>
+                <h4 className='inline'>Upload an image:</h4>
+                <UploadImage consolelog={setImageRef}/>
+            </div>
         </div>
         <form>
+            <label htmlFor='imageRef' ><h4>Link to image:</h4></label>
+            <input className="form-control mb-3" type='url' id='imageRef' value={imageRef} onChange={assignImageRef}/>
             <div className='row'>
                 <div className='col'>
                     <label htmlFor='name'><h4>Recipe name:</h4></label>
@@ -202,21 +209,21 @@ function AddRecipe() {
                 {ingredientList.map(ingredient => 
                     <li className="list-group-item" key={ingredient.ingredientId}>
                         <div className="col-sm-11 col-9 inline clearfix">
-                            <span>{ingredient.ingredientName}, {ingredient.quantity}</span>
+                            <span>{ingredient.quantity} {ingredient.ingredientName}</span>
                         </div>
                         <div className="col-sm-1 col-3 inline clearfix">
                             <button type="button" className="btn btn-danger" onClick={() => {deleteIngredient(ingredient.ingredientId)}}>⨯</button>
                         </div>
                     </li>
-                          
+                        
                 )}
                 </ul>
             </div>
             <div className="">
-                <label htmlFor="ingredientToAdd">Add an ingredient: </label>
-                <input className="form-group mx-sm-3 mb-2" id='ingredientToAdd' value={ingredientToAdd} onChange={assignIngredientToAdd} />
                 <label htmlFor="ingredientToAdd">Quantity: </label>
                 <input className="form-group mx-sm-3 mb-2" id='quantityToAdd' value={quantityToAdd} onChange={assignQuantityToAdd} />
+                <label htmlFor="ingredientToAdd">Ingredient: </label>
+                <input className="form-group mx-sm-3 mb-2" id='ingredientToAdd' value={ingredientToAdd} onChange={assignIngredientToAdd} />
                 <button className="btn btn-primary ml-2" type="button" onClick={addIngredient}>+</button>
             </div>
             <div className='row'>
@@ -227,16 +234,13 @@ function AddRecipe() {
             <br/>
             <textarea className="form-control" cols="30" rows="5" id='description' value={recipeDescription} onChange={assignDescription} />
             <br />
-            <label htmlFor='imageRef' ><h4>Link to image:</h4></label>
-            <input className="form-control" type='url' id='imageRef' value={imageRef} onChange={assignImageRef} />
-
-            <br/>
             <div className='text-center'>
                 <button className="btn btn-primary mr-1" onClick={doSubmit}>Submit Recipe</button>
                 <a href='/listRecipe' className='btn btn-danger ml-1'>Cancel</a>
             </div>
 
         </form>
+        
         <div>
             <ul>
                 {messages.map((message) => <li style={{ color: 'red' }} key={message}>{message} </li>)}

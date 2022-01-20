@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min
 import UserContext from "./UserContext";
 import '../index.css';
 
-function User(params) {
+function User() {
 
     const history = useHistory();
     const userManager = useContext(UserContext);
@@ -16,8 +16,7 @@ function User(params) {
 
     const getUserAndRecipes = () => {
 
-
-        fetch("http://localhost:8080/api/recipe/user/" + userId, {headers: {Authorization: "Bearer " + localStorage.getItem("jwt_token")}})
+        fetch(`${process.env.REACT_APP_API_HOST}/api/recipe/user/${userId}`)
         .then(
             (response) => {
                 //todo: handle 403
@@ -36,7 +35,7 @@ function User(params) {
         })
         .catch(handleError);
 
-        fetch("http://localhost:8080/api/user/" + userId, {headers: {Authorization: "Bearer " +  localStorage.getItem("jwt_token")}})
+        fetch(`${process.env.REACT_APP_API_HOST}/api/user/${userId}`)
         .then(
             (response) => {
                 if (response.status === 200) {
@@ -58,11 +57,6 @@ function User(params) {
     const [username, setUsername] = useState("");
     const [recipeList, setRecipeList] = useState([]);
 
-    const viewRecipe = (recipeId) => {
-        history.push("/recipe/" + recipeId)
-    }
-
-
     return(
 
         <main>
@@ -70,7 +64,7 @@ function User(params) {
             <div className="row">
                 {recipeList.map(recipe =>
                 
-                    <a href={"/recipe/" + recipe.recipeId} className="recipe-box col-12 col-md-4">
+                    <a key={recipe.recipeId} href={"/recipe/" + recipe.recipeId} className="recipe-box col-12 col-md-4">
                         <img src={recipe.imageRef} alt={recipe.recipeName} />
                         <span>{recipe.recipeName}</span>
                     </a>

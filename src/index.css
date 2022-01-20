@@ -21,6 +21,10 @@ ul {
     padding: 0;
 }
 
+h4 {
+    font-size: 1.25rem;
+}
+
 /* form borders */
 select, #quantityToAdd, #ingredientToAdd {
     border: 1px solid #ced4da;
@@ -30,6 +34,11 @@ select, #quantityToAdd, #ingredientToAdd {
 #cuisine-select {
     display: block;
     height: 38px;
+    width: inherit;
+}
+
+/* form */
+.image-form {
     width: inherit;
 }
 
@@ -63,6 +72,15 @@ select, #quantityToAdd, #ingredientToAdd {
 
 .btn-sm:hover {
     text-decoration: none;
+}
+
+#deleteButton, #confirmButton, .uploadButton {
+    border: 0;
+    padding: .25em .5em;
+}
+
+.uploadButton:not(:disabled) {
+    background-color: green;
 }
 
 .bold {
