@@ -4,8 +4,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY ./package.json /app/
 RUN npm install
 COPY . /app
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL ${REACT_APP_BACKEND_URL}
+ARG REACT_APP_API_HOST
+ENV REACT_APP_API_HOST ${REACT_APP_API_HOST}
 RUN npm i -D --save-exact mini-css-extract-plugin@2.4.5
 RUN npm run build
 
